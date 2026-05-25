@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Preview &middot; Resume Builder{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <h2 class="mb-0">Preview</h2>
+  <a href="{{ url_for('builder_page') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Back to editor
+  </a>
+</div>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-4 p-md-5">
+    <h2 class="mb-1">{{ data.name }}</h2>
+    {% if data.title %}<p class="text-primary fw-semibold">{{ data.title }}</p>{% endif %}
+    <p class="text-muted small">
+      {% if data.email %}<i class="bi bi-envelope me-1"></i>{{ data.email }} &middot;{% endif %}
+      {% if data.phone %}<i class="bi bi-telephone me-1"></i>{{ data.phone }} &middot;{% endif %}
+      {% if data.location %}<i class="bi bi-geo-alt me-1"></i>{{ data.location }} &middot;{% endif %}
+      {% if data.linkedin %}<i class="bi bi-linkedin me-1"></i>{{ data.linkedin }}{% endif %}
+    </p>
+
+    {% if data.summary %}
+      <h5 class="mt-4">Summary</h5>
+      <p>{{ data.summary }}</p>
+    {% endif %}
+
+    {% if data.skills %}
+      <h5 class="mt-4">Skills</h5>
+      {% for s in data.skills %}
+        <span class="badge text-bg-primary me-1 mb-1">{{ s }}</span>
+      {% endfor %}
+    {% endif %}
+
+    {% if data.experience %}
+      <h5 class="mt-4">Experience</h5>
+      {% for exp in data.experience %}
+        <div class="mb-3">
+          <strong>{{ exp.title }}</strong>{% if exp.company %} &middot; {{ exp.company }}{% endif %}
+          {% if exp.dates %}<small class="text-muted d-block">{{ exp.dates }}</small>{% endif %}
+          <ul class="mb-0">
+            {% for b in exp.bullets %}<li>{{ b }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if data.projects %}
+      <h5 class="mt-4">Projects</h5>
+      {% for p in data.projects %}
+        <div class="mb-3">
+          <strong>{{ p.name }}</strong>{% if p.tech %} &middot; <em>{{ p.tech }}</em>{% endif %}
+          {% if p.description %}<p class="mb-0">{{ p.description }}</p>{% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if data.education %}
+      <h5 class="mt-4">Education</h5>
+      {% for edu in data.education %}
+        <div class="mb-3">
+          <strong>{{ edu.degree }}</strong>{% if edu.school %}, {{ edu.school }}{% endif %}
+          {% if edu.dates %}<small class="text-muted d-block">{{ edu.dates }}</small>{% endif %}
+          {% if edu.details %}<small>{{ edu.details }}</small>{% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if data.certifications %}
+      <h5 class="mt-4">Certifications</h5>
+      <ul>{% for c in data.certifications %}<li>{{ c }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+</div>
+
+<form method="post" action="{{ url_for('builder_download') }}" class="mt-4">
+  <input type="hidden" name="name" value="{{ data.name }}">
+  <input type="hidden" name="title" value="{{ data.title }}">
+  <input type="hidden" name="email" value="{{ data.email }}">
+  <input type="hidden" name="phone" value="{{ data.phone }}">
+  <input type="hidden" name="location" value="{{ data.location }}">
+  <input type="hidden" name="linkedin" value="{{ data.linkedin }}">
+  <input type="hidden" name="summary" value="{{ data.summary }}">
+  <input type="hidden" name="skills" value="{{ data.skills | join(', ') }}">
+  <input type="hidden" name="certifications" value="{{ data.certifications | join('\n') }}">
+  {% for exp in data.experience %}
+    <input type="hidden" name="exp_title" value="{{ exp.title }}">
+    <input type="hidden" name="exp_company" value="{{ exp.company }}">
+    <input type="hidden" name="exp_dates" value="{{ exp.dates }}">
+    <input type="hidden" name="exp_bullets" value="{{ exp.bullets | join('\n') }}">
+  {% endfor %}
+  {% for edu in data.education %}
+    <input type="hidden" name="edu_degree" value="{{ edu.degree }}">
+    <input type="hidden" name="edu_school" value="{{ edu.school }}">
+    <input type="hidden" name="edu_dates" value="{{ edu.dates }}">
+    <input type="hidden" name="edu_details" value="{{ edu.details }}">
+  {% endfor %}
+  {% for p in data.projects %}
+    <input type="hidden" name="proj_name" value="{{ p.name }}">
+    <input type="hidden" name="proj_tech" value="{{ p.tech }}">
+    <input type="hidden" name="proj_desc" value="{{ p.description }}">
+  {% endfor %}
+
+  <div class="d-flex flex-wrap align-items-center gap-3">
+    <label class="fw-semibold mb-0">Download as:</label>
+    {% for tpl in templates %}
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="template" value="{{ tpl }}"
+               id="tpl-{{ tpl }}" {% if tpl == template %}checked{% endif %}>
+        <label class="form-check-label text-capitalize" for="tpl-{{ tpl }}">{{ tpl }}</label>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary ms-auto">
+      <i class="bi bi-download me-1"></i> Download PDF
+    </button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %}Resume Builder &middot; AI Resume Platform{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <div>
+    <h2 class="mb-0">Resume Builder</h2>
+    <small class="text-muted">Fill the form, pick a template, and download a PDF.</small>
+  </div>
+</div>
+
+<form method="post" id="builder-form" action="{{ url_for('builder_download') }}">
+  <div class="row g-4">
+
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3"><i class="bi bi-person text-primary me-2"></i>Personal Info</h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full name</label>
+              <input class="form-control" name="name" required placeholder="Jane Doe">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Headline / role</label>
+              <input class="form-control" name="title" placeholder="Software Engineer">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input class="form-control" name="email" type="email" placeholder="you@example.com">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input class="form-control" name="phone" placeholder="+1 555 123 4567">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Location</label>
+              <input class="form-control" name="location" placeholder="Dallas, TX">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">LinkedIn / website</label>
+              <input class="form-control" name="linkedin" placeholder="linkedin.com/in/jane">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Professional summary</label>
+              <textarea class="form-control" name="summary" rows="3"
+                        placeholder="2–3 sentences about your experience and target role"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Skills (comma separated)</label>
+              <input class="form-control" name="skills"
+                     placeholder="Python, Flask, SQL, AWS, Docker, React">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0"><i class="bi bi-briefcase text-primary me-2"></i>Experience</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-add="experience">
+              <i class="bi bi-plus"></i> Add
+            </button>
+          </div>
+          <div id="experience-list"></div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0"><i class="bi bi-mortarboard text-primary me-2"></i>Education</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-add="education">
+              <i class="bi bi-plus"></i> Add
+            </button>
+          </div>
+          <div id="education-list"></div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0"><i class="bi bi-rocket-takeoff text-primary me-2"></i>Projects</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" data-add="project">
+              <i class="bi bi-plus"></i> Add
+            </button>
+          </div>
+          <div id="project-list"></div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3"><i class="bi bi-patch-check text-primary me-2"></i>Certifications</h5>
+          <textarea class="form-control" name="certifications" rows="3"
+                    placeholder="One per line, e.g. AWS Certified Solutions Architect"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 sticky-top" style="top: 1rem;">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3"><i class="bi bi-palette text-primary me-2"></i>Template</h5>
+          <div class="d-grid gap-2 mb-3">
+            {% for tpl in templates %}
+              <label class="template-option">
+                <input type="radio" name="template" value="{{ tpl }}" {% if loop.first %}checked{% endif %}>
+                <span class="template-card">
+                  <strong class="text-capitalize">{{ tpl }}</strong>
+                  <small class="d-block text-muted">
+                    {% if tpl == 'modern' %}
+                      Two-column with sidebar &middot; Indigo accent
+                    {% else %}
+                      Traditional single column &middot; Serif typography
+                    {% endif %}
+                  </small>
+                </span>
+              </label>
+            {% endfor %}
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-download me-1"></i> Download PDF
+            </button>
+            <button type="submit" class="btn btn-outline-secondary"
+                    formaction="{{ url_for('builder_preview') }}">
+              <i class="bi bi-eye me-1"></i> Preview Data
+            </button>
+          </div>
+
+          <p class="text-muted small mt-3 mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            Your data is processed in-memory and never stored on the server.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<template id="tpl-experience">
+  <div class="repeat-row border rounded p-3 mb-3">
+    <div class="row g-2">
+      <div class="col-md-5"><input class="form-control" name="exp_title" placeholder="Job title"></div>
+      <div class="col-md-5"><input class="form-control" name="exp_company" placeholder="Company"></div>
+      <div class="col-md-2"><input class="form-control" name="exp_dates" placeholder="2022 – Present"></div>
+      <div class="col-12">
+        <textarea class="form-control" name="exp_bullets" rows="3"
+                  placeholder="One bullet per line — start with a strong action verb"></textarea>
+      </div>
+    </div>
+    <button type="button" class="btn btn-sm btn-link text-danger mt-2 remove-row">Remove</button>
+  </div>
+</template>
+
+<template id="tpl-education">
+  <div class="repeat-row border rounded p-3 mb-3">
+    <div class="row g-2">
+      <div class="col-md-5"><input class="form-control" name="edu_degree" placeholder="Degree"></div>
+      <div class="col-md-5"><input class="form-control" name="edu_school" placeholder="School"></div>
+      <div class="col-md-2"><input class="form-control" name="edu_dates" placeholder="2018 – 2022"></div>
+      <div class="col-12"><input class="form-control" name="edu_details" placeholder="GPA, honors, relevant coursework"></div>
+    </div>
+    <button type="button" class="btn btn-sm btn-link text-danger mt-2 remove-row">Remove</button>
+  </div>
+</template>
+
+<template id="tpl-project">
+  <div class="repeat-row border rounded p-3 mb-3">
+    <div class="row g-2">
+      <div class="col-md-6"><input class="form-control" name="proj_name" placeholder="Project name"></div>
+      <div class="col-md-6"><input class="form-control" name="proj_tech" placeholder="Tech stack"></div>
+      <div class="col-12">
+        <textarea class="form-control" name="proj_desc" rows="2" placeholder="What it does and your role / impact"></textarea>
+      </div>
+    </div>
+    <button type="button" class="btn btn-sm btn-link text-danger mt-2 remove-row">Remove</button>
+  </div>
+</template>
+
+<script>
+  const lists = {
+    experience: document.getElementById('experience-list'),
+    education: document.getElementById('education-list'),
+    project: document.getElementById('project-list'),
+  };
+
+  function addRow(kind) {
+    const tpl = document.getElementById('tpl-' + kind);
+    const clone = tpl.content.cloneNode(true);
+    clone.querySelector('.remove-row').addEventListener('click', e => {
+      e.target.closest('.repeat-row').remove();
+    });
+    lists[kind].appendChild(clone);
+  }
+
+  document.querySelectorAll('[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => addRow(btn.dataset.add));
+  });
+
+  addRow('experience');
+  addRow('education');
+  addRow('project');
+</script>
+{% endblock %}

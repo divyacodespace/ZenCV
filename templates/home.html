@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}AI Resume Platform{% endblock %}
+{% block content %}
+<div class="text-center mb-5">
+  <h1 class="display-5 fw-bold">AI Resume Platform</h1>
+  <p class="lead text-muted">Analyze, build, and tailor your resume — all in one place.</p>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <a href="{{ url_for('analyzer_page') }}" class="card-link">
+      <div class="card shadow-sm border-0 h-100 hover-lift">
+        <div class="card-body p-4 text-center">
+          <div class="feature-icon bg-primary-subtle text-primary mx-auto mb-3">
+            <i class="bi bi-bar-chart-line"></i>
+          </div>
+          <h5 class="fw-bold">Resume Analyzer</h5>
+          <p class="text-muted mb-0">Upload your resume and get an ATS score with strengths, weaknesses, and fixes.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-4">
+    <a href="{{ url_for('builder_page') }}" class="card-link">
+      <div class="card shadow-sm border-0 h-100 hover-lift">
+        <div class="card-body p-4 text-center">
+          <div class="feature-icon bg-success-subtle text-success mx-auto mb-3">
+            <i class="bi bi-pencil-square"></i>
+          </div>
+          <h5 class="fw-bold">Resume Builder</h5>
+          <p class="text-muted mb-0">Fill a simple form and download a PDF in Modern or Classic style.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-4">
+    <a href="{{ url_for('jd_match_page') }}" class="card-link">
+      <div class="card shadow-sm border-0 h-100 hover-lift">
+        <div class="card-body p-4 text-center">
+          <div class="feature-icon bg-warning-subtle text-warning mx-auto mb-3">
+            <i class="bi bi-bullseye"></i>
+          </div>
+          <h5 class="fw-bold">JD Match Calculator</h5>
+          <p class="text-muted mb-0">Paste a job description and see how well your resume matches it.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="card shadow-sm border-0 mt-5">
+  <div class="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+      <h5 class="mb-1"><i class="bi bi-code-slash text-primary me-2"></i>Backend API</h5>
+      <p class="text-muted mb-0 small">Programmatic JSON endpoints for analysis and JD matching.</p>
+    </div>
+    <a href="{{ url_for('api_docs') }}" class="btn btn-outline-primary">View API Docs</a>
+  </div>
+</div>
+{% endblock %}

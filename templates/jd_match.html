@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}JD Match &middot; AI Resume Platform{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">JD Match Calculator</h2>
+      <p class="text-muted">See how well your resume aligns with a specific job description.</p>
+    </div>
+
+    <form action="{{ url_for('jd_match_analyze') }}" method="post" enctype="multipart/form-data">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body p-4">
+              <h5 class="card-title"><i class="bi bi-file-earmark-text text-primary me-2"></i>Your Resume</h5>
+              <div class="mb-3">
+                <label class="form-label small">Upload (PDF/DOCX)</label>
+                <input class="form-control" type="file" name="resume" accept=".pdf,.docx">
+              </div>
+              <div class="text-center text-muted small my-2">— or —</div>
+              <label class="form-label small">Paste resume text</label>
+              <textarea class="form-control" name="resume_text" rows="10"
+                        placeholder="Paste your resume text here if you prefer..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body p-4">
+              <h5 class="card-title"><i class="bi bi-clipboard-check text-primary me-2"></i>Job Description</h5>
+              <label class="form-label small">Paste the full posting</label>
+              <textarea class="form-control" name="jd_text" rows="14" required
+                        placeholder="Paste the full job description here..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="bi bi-bullseye me-1"></i> Calculate Match
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

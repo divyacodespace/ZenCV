@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# Local secrets / experimental scripts
+resume_analyzer.py
+.env
+*.key
+
+# IDE / tooling
+.vscode/
+.idea/
+.claude/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build / runtime artifacts
+uploads/
+*.pdf
+!static/**/*.pdf
+
+# Flask
+instance/
