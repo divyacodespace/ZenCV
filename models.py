@@ -44,7 +44,7 @@ class AnalysisRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"),
-                         nullable=False, index=True)
+                         nullable=True, index=True)
     filename = db.Column(db.String(255), nullable=False)
     ats_score = db.Column(db.Integer, nullable=False)
     word_count = db.Column(db.Integer, nullable=False)
@@ -57,7 +57,7 @@ class JDMatchRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"),
-                         nullable=False, index=True)
+                         nullable=True, index=True)
     match_score = db.Column(db.Integer, nullable=False)
     jd_preview = db.Column(db.String(280), nullable=False)
     payload_json = db.Column(db.Text, nullable=False)   # full JDMatchResult as JSON

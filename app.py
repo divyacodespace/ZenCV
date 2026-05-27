@@ -10,7 +10,7 @@ from dataclasses import asdict
 from flask import (
     Flask, flash, jsonify, redirect, render_template, request, send_file, url_for,
 )
-from flask_login import LoginManager, current_user, login_required
+from flask_login import LoginManager, current_user
 from werkzeug.utils import secure_filename
 
 from analyzer import analyze
@@ -72,17 +72,14 @@ def create_app() -> Flask:
     # ---------- Pages (all require login) ----------
 
     @app.route("/")
-    @login_required
     def index():
         return render_template("home.html")
 
     @app.route("/analyzer")
-    @login_required
     def analyzer_page():
         return render_template("analyzer.html")
 
     @app.route("/analyze", methods=["POST"])
-    @login_required
     def analyze_resume():
         file = request.files.get("resume")
         if not file or not file.filename or not _allowed(file.filename):
@@ -102,7 +99,7 @@ def create_app() -> Flask:
         payload = asdict(result)
         payload.pop("text", None)
         rec = AnalysisRecord(
-            user_id=current_user.id,
+            user_id=(current_user.id if getattr(current_user, "is_authenticated", False) else None),
             filename=result.filename,
             ats_score=result.ats_score,
             word_count=result.word_count,
@@ -114,12 +111,10 @@ def create_app() -> Flask:
         return render_template("results.html", r=result)
 
     @app.route("/builder")
-    @login_required
     def builder_page():
         return render_template("builder.html", templates=TEMPLATES)
 
     @app.route("/builder/preview", methods=["POST"])
-    @login_required
     def builder_preview():
         data = resume_from_form(request.form)
         template = request.form.get("template", "modern")
@@ -130,7 +125,6 @@ def create_app() -> Flask:
                                 templates=TEMPLATES)
 
     @app.route("/builder/download", methods=["POST"])
-    @login_required
     def builder_download():
         data = resume_from_form(request.form)
         template = request.form.get("template", "modern")
@@ -147,12 +141,10 @@ def create_app() -> Flask:
         )
 
     @app.route("/jd-match")
-    @login_required
     def jd_match_page():
         return render_template("jd_match.html")
 
     @app.route("/jd-match/analyze", methods=["POST"])
-    @login_required
     def jd_match_analyze():
         jd_text = (request.form.get("jd_text") or "").strip()
         resume_text = (request.form.get("resume_text") or "").strip()
@@ -176,7 +168,7 @@ def create_app() -> Flask:
 
         payload = asdict(result)
         rec = JDMatchRecord(
-            user_id=current_user.id,
+            user_id=(current_user.id if getattr(current_user, "is_authenticated", False) else None),
             match_score=result.match_score,
             jd_preview=jd_text[:280],
             payload_json=json.dumps(payload),
@@ -187,14 +179,12 @@ def create_app() -> Flask:
         return render_template("jd_match_result.html", r=result)
 
     @app.route("/api/docs")
-    @login_required
     def api_docs():
         return render_template("api_docs.html")
 
     # ---------- JSON API (also require login via session) ----------
 
     @app.route("/api/analyze", methods=["POST"])
-    @login_required
     def api_analyze():
         file = request.files.get("resume")
         if not file or not file.filename or not _allowed(file.filename):
@@ -220,7 +210,6 @@ def create_app() -> Flask:
         return jsonify(payload)
 
     @app.route("/api/jd-match", methods=["POST"])
-    @login_required
     def api_jd_match():
         jd_text = (request.form.get("jd_text") or "").strip()
         resume_text = (request.form.get("resume_text") or "").strip()
