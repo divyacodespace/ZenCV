@@ -1,62 +1,110 @@
 {% extends "base.html" %}
-{% block title %}AI Resume Platform{% endblock %}
+{% block title %}ZenCV — Land Interviews Faster{% endblock %}
 {% block content %}
-<div class="text-center mb-5">
-  <h1 class="display-5 fw-bold">AI Resume Platform</h1>
-  <p class="lead text-muted">Analyze, build, and tailor your resume — all in one place.</p>
-</div>
 
-<div class="row g-4">
-  <div class="col-md-4">
-    <a href="{{ url_for('analyzer_page') }}" class="card-link">
-      <div class="card shadow-sm border-0 h-100 hover-lift">
-        <div class="card-body p-4 text-center">
-          <div class="feature-icon bg-primary-subtle text-primary mx-auto mb-3">
-            <i class="bi bi-bar-chart-line"></i>
-          </div>
-          <h5 class="fw-bold">Resume Analyzer</h5>
-          <p class="text-muted mb-0">Upload your resume and get an ATS score with strengths, weaknesses, and fixes.</p>
-        </div>
-      </div>
+<section class="text-center pt-3 pb-5 reveal">
+  <span class="hero-eyebrow">
+    <span class="pulse-dot"></span>
+    Powered by Clyra
+  </span>
+  <h1 class="display-3 fw-bold mb-3">
+    <span class="gradient-text">ZenCV</span> — resumes that<br class="d-none d-md-block">
+    pass bots and impress humans.
+  </h1>
+  <p class="lead text-muted mx-auto" style="max-width: 640px;">
+    Analyze your existing resume, tailor it to a specific job description, and
+    generate a polished PDF in seconds — all in one place.
+  </p>
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+    <a href="{{ url_for('analyzer_page') }}" class="btn btn-primary btn-lg">
+      <i class="bi bi-magic me-2"></i> Analyze my resume
+    </a>
+    <a href="{{ url_for('builder_page') }}" class="btn btn-outline-secondary btn-lg">
+      <i class="bi bi-pencil-square me-2"></i> Build from scratch
     </a>
   </div>
 
-  <div class="col-md-4">
-    <a href="{{ url_for('builder_page') }}" class="card-link">
-      <div class="card shadow-sm border-0 h-100 hover-lift">
-        <div class="card-body p-4 text-center">
-          <div class="feature-icon bg-success-subtle text-success mx-auto mb-3">
-            <i class="bi bi-pencil-square"></i>
-          </div>
-          <h5 class="fw-bold">Resume Builder</h5>
-          <p class="text-muted mb-0">Fill a simple form and download a PDF in Modern or Classic style.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-
-  <div class="col-md-4">
-    <a href="{{ url_for('jd_match_page') }}" class="card-link">
-      <div class="card shadow-sm border-0 h-100 hover-lift">
-        <div class="card-body p-4 text-center">
-          <div class="feature-icon bg-warning-subtle text-warning mx-auto mb-3">
-            <i class="bi bi-bullseye"></i>
-          </div>
-          <h5 class="fw-bold">JD Match Calculator</h5>
-          <p class="text-muted mb-0">Paste a job description and see how well your resume matches it.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-</div>
-
-<div class="card shadow-sm border-0 mt-5">
-  <div class="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
-    <div>
-      <h5 class="mb-1"><i class="bi bi-code-slash text-primary me-2"></i>Backend API</h5>
-      <p class="text-muted mb-0 small">Programmatic JSON endpoints for analysis and JD matching.</p>
+  <div class="row text-center mt-5 stagger justify-content-center" style="max-width: 700px; margin-inline: auto;">
+    <div class="col-4 reveal">
+      <div class="display-6 fw-bold gradient-text"><span data-count="100">0</span></div>
+      <small class="text-muted">ATS scoring points</small>
     </div>
-    <a href="{{ url_for('api_docs') }}" class="btn btn-outline-primary">View API Docs</a>
+    <div class="col-4 reveal">
+      <div class="display-6 fw-bold gradient-text"><span data-count="2">0</span></div>
+      <small class="text-muted">PDF templates</small>
+    </div>
+    <div class="col-4 reveal">
+      <div class="display-6 fw-bold gradient-text">∞</div>
+      <small class="text-muted">Resumes you can polish</small>
+    </div>
   </div>
-</div>
+</section>
+
+<section class="bento mt-4 stagger">
+  <a href="{{ url_for('analyzer_page') }}" class="card-link reveal">
+    <div class="card hover-lift h-100 feature-card">
+      <div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div>
+      <h4 class="fw-bold mb-2">Resume Analyzer</h4>
+      <p class="text-muted mb-0">
+        Upload a PDF or DOCX and get an ATS score (0–100) with strengths,
+        weaknesses, missing skills, and concrete improvement suggestions.
+      </p>
+      <span class="feature-arrow"><i class="bi bi-arrow-down"></i></span>
+    </div>
+  </a>
+
+  <a href="{{ url_for('builder_page') }}" class="card-link reveal">
+    <div class="card hover-lift h-100 feature-card">
+      <div class="feature-icon" style="background: rgba(16,185,129,0.12); color: var(--success);">
+        <i class="bi bi-pencil-square"></i>
+      </div>
+      <h4 class="fw-bold mb-2">Resume Builder</h4>
+      <p class="text-muted mb-0">
+        Fill a clean multi-section form, pick Modern or Classic, and download
+        a polished, ATS-safe PDF instantly.
+      </p>
+      <span class="feature-arrow"><i class="bi bi-arrow-down"></i></span>
+    </div>
+  </a>
+
+  <a href="{{ url_for('jd_match_page') }}" class="card-link reveal">
+    <div class="card hover-lift h-100 feature-card">
+      <div class="feature-icon" style="background: rgba(245,158,11,0.12); color: var(--warning);">
+        <i class="bi bi-bullseye"></i>
+      </div>
+      <h4 class="fw-bold mb-2">JD Match Calculator</h4>
+      <p class="text-muted mb-0">
+        Paste any job description and see exactly which keywords and skills
+        you're missing — with a match-percentage score.
+      </p>
+      <span class="feature-arrow"><i class="bi bi-arrow-down"></i></span>
+    </div>
+  </a>
+
+  <a href="{{ url_for('api_docs') }}" class="card-link reveal">
+    <div class="card hover-lift h-100 feature-card">
+      <div class="feature-icon" style="background: rgba(6,182,212,0.12); color: var(--info);">
+        <i class="bi bi-code-slash"></i>
+      </div>
+      <h4 class="fw-bold mb-2">Backend API</h4>
+      <p class="text-muted mb-0">
+        Programmatic JSON endpoints for both the analyzer and JD matcher —
+        easy to integrate into your own apps.
+      </p>
+      <span class="feature-arrow"><i class="bi bi-arrow-down"></i></span>
+    </div>
+  </a>
+</section>
+
+<section class="mt-5 reveal">
+  <div class="card p-4 p-md-5 text-center">
+    <span class="section-eyebrow">Privacy first</span>
+    <h3 class="fw-bold mt-1 mb-2">Your resume never leaves your session.</h3>
+    <p class="text-muted mb-0">
+      All parsing and scoring happens in memory. Nothing is saved to disk,
+      logged, or sent to any third party.
+    </p>
+  </div>
+</section>
+
 {% endblock %}

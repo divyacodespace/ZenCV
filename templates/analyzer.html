@@ -1,70 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Upload Resume &middot; AI Resume Analyzer{% endblock %}
+{% block title %}Analyze Resume · ZenCV{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-8">
-    <div class="text-center mb-4">
-      <h1 class="display-6 fw-bold">Get an instant ATS score for your resume</h1>
+    <div class="text-center mb-4 reveal">
+      <span class="section-eyebrow">Resume Analyzer</span>
+      <h1 class="display-5 fw-bold mb-2">Get your <span class="gradient-text">ATS score</span> instantly</h1>
       <p class="text-muted">
-        Upload a PDF or DOCX. We'll extract the text, check for missing sections,
-        keyword gaps, weak content, and formatting issues — then suggest fixes.
+        Drop your resume below. We'll extract the text, score it across 7 dimensions,
+        and surface the exact gaps to fix.
       </p>
     </div>
 
-    <div class="card shadow-sm border-0">
-      <div class="card-body p-4 p-md-5">
-        <form action="{{ url_for('analyze_resume') }}" method="post" enctype="multipart/form-data" id="upload-form">
-          <label for="resume" class="upload-dropzone d-flex flex-column align-items-center justify-content-center text-center">
-            <i class="bi bi-cloud-arrow-up display-3 text-primary mb-2"></i>
-            <span class="fw-semibold">Click to choose your resume</span>
-            <span class="text-muted small">PDF or DOCX &middot; max 8 MB</span>
-            <span id="file-name" class="badge text-bg-light mt-3 d-none"></span>
-            <input id="resume" name="resume" type="file" accept=".pdf,.docx" class="d-none" required>
-          </label>
-
-          <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">
-              <i class="bi bi-bar-chart-line me-2"></i>Analyze Resume
-            </button>
+    <div class="card p-4 p-md-5 reveal">
+      <form action="{{ url_for('analyze_resume') }}" method="post" enctype="multipart/form-data">
+        <label for="resume" class="upload-dropzone">
+          <div class="upload-icon-wrap">
+            <i class="bi bi-cloud-arrow-up"></i>
           </div>
-        </form>
-      </div>
+          <h5 class="fw-bold mb-1">Drop your resume here</h5>
+          <span data-default-hint class="text-muted small">or click to browse · PDF or DOCX · max 8 MB</span>
+          <span data-file-name class="badge text-bg-light mt-3 d-none px-3 py-2"></span>
+          <input id="resume" name="resume" type="file" accept=".pdf,.docx" class="d-none" required>
+        </label>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary btn-lg">
+            <i class="bi bi-magic me-2"></i> Analyze Resume
+          </button>
+        </div>
+      </form>
     </div>
 
-    <div class="row text-center mt-5 g-3">
-      <div class="col-md-4">
-        <div class="p-3">
-          <i class="bi bi-speedometer2 fs-2 text-primary"></i>
-          <h6 class="mt-2 mb-1">ATS Score</h6>
-          <small class="text-muted">0–100 score with full breakdown</small>
+    <div class="row text-center mt-5 stagger g-3">
+      <div class="col-md-4 reveal">
+        <div class="card p-3 h-100">
+          <i class="bi bi-speedometer2 fs-3 gradient-text mb-1"></i>
+          <h6 class="mt-1 mb-1">ATS Score</h6>
+          <small class="text-muted">7-dimension scoring</small>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="p-3">
-          <i class="bi bi-search fs-2 text-primary"></i>
-          <h6 class="mt-2 mb-1">Keyword Gaps</h6>
-          <small class="text-muted">Skills missing for modern roles</small>
+      <div class="col-md-4 reveal">
+        <div class="card p-3 h-100">
+          <i class="bi bi-search fs-3 gradient-text mb-1"></i>
+          <h6 class="mt-1 mb-1">Keyword Gaps</h6>
+          <small class="text-muted">Skills you're missing</small>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="p-3">
-          <i class="bi bi-lightbulb fs-2 text-primary"></i>
-          <h6 class="mt-2 mb-1">Suggestions</h6>
-          <small class="text-muted">Concrete fixes you can apply today</small>
+      <div class="col-md-4 reveal">
+        <div class="card p-3 h-100">
+          <i class="bi bi-lightbulb fs-3 gradient-text mb-1"></i>
+          <h6 class="mt-1 mb-1">Suggestions</h6>
+          <small class="text-muted">Concrete next steps</small>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  const input = document.getElementById('resume');
-  const badge = document.getElementById('file-name');
-  input.addEventListener('change', () => {
-    if (input.files.length > 0) {
-      badge.textContent = input.files[0].name;
-      badge.classList.remove('d-none');
-    }
-  });
-</script>
 {% endblock %}

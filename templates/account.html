@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Your History · ZenCV{% endblock %}
+{% block content %}
+
+<div class="d-flex align-items-center mb-4 reveal gap-3 flex-wrap">
+  <div class="user-avatar" style="width:64px; height:64px; font-size:1.5rem;">
+    {{ current_user.name[:1] | upper }}
+  </div>
+  <div>
+    <span class="section-eyebrow">Your Account</span>
+    <h2 class="mb-0">{{ current_user.name }}</h2>
+    <small class="text-muted">{{ current_user.email }} · joined {{ current_user.created_at.strftime('%b %d, %Y') }}</small>
+  </div>
+  <div class="ms-auto d-flex gap-2 flex-wrap">
+    <div class="card px-3 py-2 text-center">
+      <small class="text-muted">Analyses</small>
+      <div class="fw-bold fs-5">{{ total_analyses }}</div>
+    </div>
+    <div class="card px-3 py-2 text-center">
+      <small class="text-muted">JD Matches</small>
+      <div class="fw-bold fs-5">{{ total_matches }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6 reveal">
+    <div class="card p-4 h-100">
+      <div class="d-flex align-items-center mb-3">
+        <h5 class="card-title mb-0"><i class="bi bi-bar-chart-line text-primary me-2"></i>Resume Analyses</h5>
+        <a href="{{ url_for('analyzer_page') }}" class="btn btn-sm btn-outline-primary ms-auto">
+          <i class="bi bi-plus"></i> New
+        </a>
+      </div>
+      {% if analyses %}
+        <div class="history-list">
+          {% for item in analyses %}
+            {% set s = item.record.ats_score %}
+            {% if s >= 80 %}{% set c = 'success' %}{% elif s >= 60 %}{% set c = 'primary' %}{% elif s >= 40 %}{% set c = 'warning' %}{% else %}{% set c = 'danger' %}{% endif %}
+            <a href="{{ url_for('auth.view_analysis', record_id=item.record.id) }}" class="history-item">
+              <div class="history-score history-score-{{ c }}">{{ s }}</div>
+              <div class="flex-grow-1 min-w-0">
+                <div class="fw-semibold text-truncate">{{ item.record.filename }}</div>
+                <small class="text-muted">
+                  {{ item.record.created_at.strftime('%b %d, %Y · %I:%M %p') }} ·
+                  {{ item.record.word_count }} words
+                </small>
+              </div>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-4">
+          <i class="bi bi-inbox display-5 text-muted"></i>
+          <p class="text-muted mt-2 mb-3">No analyses yet.</p>
+          <a href="{{ url_for('analyzer_page') }}" class="btn btn-primary">
+            <i class="bi bi-magic me-1"></i> Analyze a resume
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6 reveal">
+    <div class="card p-4 h-100">
+      <div class="d-flex align-items-center mb-3">
+        <h5 class="card-title mb-0"><i class="bi bi-bullseye text-warning me-2"></i>JD Matches</h5>
+        <a href="{{ url_for('jd_match_page') }}" class="btn btn-sm btn-outline-primary ms-auto">
+          <i class="bi bi-plus"></i> New
+        </a>
+      </div>
+      {% if matches %}
+        <div class="history-list">
+          {% for item in matches %}
+            {% set s = item.record.match_score %}
+            {% if s >= 80 %}{% set c = 'success' %}{% elif s >= 60 %}{% set c = 'primary' %}{% elif s >= 40 %}{% set c = 'warning' %}{% else %}{% set c = 'danger' %}{% endif %}
+            <a href="{{ url_for('auth.view_match', record_id=item.record.id) }}" class="history-item">
+              <div class="history-score history-score-{{ c }}">{{ s }}%</div>
+              <div class="flex-grow-1 min-w-0">
+                <div class="fw-semibold text-truncate">{{ item.record.jd_preview[:60] }}{% if item.record.jd_preview|length > 60 %}…{% endif %}</div>
+                <small class="text-muted">{{ item.record.created_at.strftime('%b %d, %Y · %I:%M %p') }}</small>
+              </div>
+              <i class="bi bi-chevron-right text-muted"></i>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-4">
+          <i class="bi bi-inbox display-5 text-muted"></i>
+          <p class="text-muted mt-2 mb-3">No JD matches yet.</p>
+          <a href="{{ url_for('jd_match_page') }}" class="btn btn-primary">
+            <i class="bi bi-bullseye me-1"></i> Run a match
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

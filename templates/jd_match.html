@@ -1,46 +1,61 @@
 {% extends "base.html" %}
-{% block title %}JD Match &middot; AI Resume Platform{% endblock %}
+{% block title %}JD Match · ZenCV{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-lg-10">
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">JD Match Calculator</h2>
-      <p class="text-muted">See how well your resume aligns with a specific job description.</p>
+  <div class="col-lg-11">
+    <div class="text-center mb-4 reveal">
+      <span class="section-eyebrow">JD Match Calculator</span>
+      <h1 class="display-5 fw-bold mb-2">How well do you <span class="gradient-text">fit the role?</span></h1>
+      <p class="text-muted">
+        Drop your resume + the job description and get an instant match percentage,
+        missing keywords, and tailored suggestions.
+      </p>
     </div>
 
-    <form action="{{ url_for('jd_match_analyze') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url_for('jd_match_analyze') }}" method="post" enctype="multipart/form-data" class="stagger">
       <div class="row g-4">
-        <div class="col-md-6">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-body p-4">
-              <h5 class="card-title"><i class="bi bi-file-earmark-text text-primary me-2"></i>Your Resume</h5>
-              <div class="mb-3">
-                <label class="form-label small">Upload (PDF/DOCX)</label>
-                <input class="form-control" type="file" name="resume" accept=".pdf,.docx">
+        <div class="col-md-6 reveal">
+          <div class="card p-4 h-100">
+            <h5 class="card-title">
+              <i class="bi bi-file-earmark-text text-primary me-2"></i>Your Resume
+            </h5>
+
+            <label class="upload-dropzone mb-3" style="padding: 1.75rem 1rem;">
+              <div class="upload-icon-wrap" style="width: 56px; height: 56px; font-size: 1.4rem;">
+                <i class="bi bi-cloud-arrow-up"></i>
               </div>
-              <div class="text-center text-muted small my-2">— or —</div>
-              <label class="form-label small">Paste resume text</label>
-              <textarea class="form-control" name="resume_text" rows="10"
-                        placeholder="Paste your resume text here if you prefer..."></textarea>
+              <span data-default-hint class="small fw-semibold mb-0">Upload PDF or DOCX</span>
+              <small class="text-muted">click to browse, or drag a file here</small>
+              <span data-file-name class="badge text-bg-light mt-2 d-none px-3 py-2"></span>
+              <input type="file" name="resume" accept=".pdf,.docx" class="d-none">
+            </label>
+
+            <div class="d-flex align-items-center text-muted small my-1">
+              <div class="flex-grow-1" style="height:1px;background:var(--border);"></div>
+              <span class="px-2">or paste</span>
+              <div class="flex-grow-1" style="height:1px;background:var(--border);"></div>
             </div>
+
+            <textarea class="form-control mt-2" name="resume_text" rows="8"
+                      placeholder="Paste your resume text here if you prefer..."></textarea>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-body p-4">
-              <h5 class="card-title"><i class="bi bi-clipboard-check text-primary me-2"></i>Job Description</h5>
-              <label class="form-label small">Paste the full posting</label>
-              <textarea class="form-control" name="jd_text" rows="14" required
-                        placeholder="Paste the full job description here..."></textarea>
-            </div>
+        <div class="col-md-6 reveal">
+          <div class="card p-4 h-100">
+            <h5 class="card-title">
+              <i class="bi bi-clipboard-check text-primary me-2"></i>Job Description
+            </h5>
+            <label class="form-label">Paste the full posting</label>
+            <textarea class="form-control" name="jd_text" rows="14" required
+                      placeholder="Paste the full job description here..."></textarea>
           </div>
         </div>
       </div>
 
       <div class="d-grid mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
-          <i class="bi bi-bullseye me-1"></i> Calculate Match
+          <i class="bi bi-bullseye me-2"></i> Calculate Match
         </button>
       </div>
     </form>

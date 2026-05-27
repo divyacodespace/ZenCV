@@ -1,12 +1,15 @@
 {% extends "base.html" %}
-{% block title %}API Docs &middot; AI Resume Platform{% endblock %}
+{% block title %}API Docs · ZenCV{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-10">
-    <h2 class="mb-1"><i class="bi bi-code-slash text-primary me-2"></i>Backend API</h2>
-    <p class="text-muted">Programmatic JSON access to the resume analyzer and JD matcher.</p>
+    <div class="text-center mb-4 reveal">
+      <span class="section-eyebrow">Developer API</span>
+      <h1 class="display-5 fw-bold mb-2">Build with the <span class="gradient-text">ZenCV API</span></h1>
+      <p class="text-muted">Programmatic JSON access to the resume analyzer and JD matcher.</p>
+    </div>
 
-    <div class="card shadow-sm border-0 mb-4">
+    <div class="card mb-4 reveal">
       <div class="card-body p-4">
         <h5 class="mb-2">
           <span class="badge text-bg-success me-2">POST</span>
@@ -39,7 +42,7 @@
       </div>
     </div>
 
-    <div class="card shadow-sm border-0 mb-4">
+    <div class="card mb-4 reveal">
       <div class="card-body p-4">
         <h5 class="mb-2">
           <span class="badge text-bg-success me-2">POST</span>
@@ -72,7 +75,7 @@
       </div>
     </div>
 
-    <div class="card shadow-sm border-0">
+    <div class="card reveal">
       <div class="card-body p-4">
         <h6 class="mb-2"><i class="bi bi-info-circle text-primary me-2"></i>Errors</h6>
         <p class="small text-muted mb-2">All errors return JSON with HTTP 400:</p>
