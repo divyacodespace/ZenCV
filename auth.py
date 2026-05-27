@@ -65,39 +65,12 @@ def signup():
     return render_template("signup.html")
 
 
-@auth_bp.route("/login", methods=["GET", "POST"])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for("index"))
-
-    if request.method == "POST":
-        email = (request.form.get("email") or "").strip().lower()
-        password = request.form.get("password") or ""
-        remember = bool(request.form.get("remember"))
-
-        user = User.query.filter_by(email=email).first()
-        if not user or not user.check_password(password):
-            flash("Incorrect email or password.", "danger")
-            return render_template("login.html", email=email)
-
-        login_user(user, remember=remember)
-        user.last_login_at = datetime.utcnow()
-        db.session.commit()
-
-        next_url = request.args.get("next")
-        if next_url and next_url.startswith("/"):
-            return redirect(next_url)
-        return redirect(url_for("index"))
-
-    return render_template("login.html")
-
-
 @auth_bp.route("/logout", methods=["POST", "GET"])
 @login_required
 def logout():
     logout_user()
     flash("You've been logged out.", "success")
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("auth.signup"))
 
 
 @auth_bp.route("/account")
