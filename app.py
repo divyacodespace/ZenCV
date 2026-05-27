@@ -10,11 +10,10 @@ from dataclasses import asdict
 from flask import (
     Flask, flash, jsonify, redirect, render_template, request, send_file, url_for,
 )
-from flask_login import LoginManager, current_user
+from flask_login import current_user
 from werkzeug.utils import secure_filename
 
 from analyzer import analyze
-from auth import auth_bp
 from jd_matcher import match as jd_match
 from models import AnalysisRecord, JDMatchRecord, User, db
 from resume_builder import TEMPLATES, render_pdf, resume_from_form
@@ -51,19 +50,7 @@ def create_app() -> Flask:
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
-    # Login manager
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-    login_manager.login_view = "auth.signup"
-    login_manager.login_message = "Please sign up to continue."
-    login_manager.login_message_category = "warning"
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return db.session.get(User, int(user_id))
-
-    # Auth blueprint
-    app.register_blueprint(auth_bp)
+    # Note: authentication removed — app runs without an auth blueprint
 
     # Create tables on startup
     with app.app_context():
